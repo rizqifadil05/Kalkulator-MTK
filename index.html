@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perhitungan Bunga</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .result {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-left: 20px;
+            text-align: center;
+        }
+
+        .result h2 {
+            color: #333;
+        }
+
+        .result p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .navbar button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .navbar button.active {
+            background-color: #0056b3;
+        }
+
+        /* Button animation styles */
+        /* From Uiverse.io by OliverZeros */ 
+button {
+  all: unset;
+}
+
+.button {
+  position: relative;
+  display: flex;
+  height: 3.5rem;
+  align-items: center;
+  border-radius: 9999px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-family: Segoe UI;
+  font-size: 1.2rem;
+  font-weight: 640;
+  color: #fafaf6;
+  letter-spacing: -0.06em;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.button-item {
+  background-color: transparent;
+  color: #1d1d1f;
+}
+
+.button-item .button-bg {
+  border-color: rgba(255, 208, 116);
+  background-color: rgba(255, 208, 116);
+}
+
+.button-inner,
+.button-inner-hover,
+.button-inner-static {
+  pointer-events: none;
+  display: block;
+}
+
+.button-inner {
+  position: relative;
+  margin: 0 auto;
+}
+
+.button-inner-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateY(70%);
+}
+
+.button-bg {
+  overflow: hidden;
+  border-radius: 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1);
+  transition: transform 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.button-bg-layer {
+  border-radius: 9999px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(0);
+  margin: 0 auto;
+}
+
+.button-bg-layer.-purple {
+  background-color: rgba(163, 116, 255);
+}
+
+.button-bg-layer.-turquoise {
+  background-color: rgba(23, 241, 209);
+}
+
+.button-bg-layer.-yellow {
+  background-color: rgba(255, 208, 116);
+}
+
+.button:hover .button-inner-static {
+  opacity: 0;
+  transform: translateY(-70%);
+  transition:
+    transform 1.4s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.3s linear;
+}
+
+.button:hover .button-inner-hover {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    transform 1.4s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.button:hover .button-bg-layer {
+  transition:
+    transform 1.3s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.3s linear;
+}
+
+.button:hover .button-bg-layer-1 {
+  transform: scale(1);
+}
+
+.button:hover .button-bg-layer-2 {
+  transition-delay: 0.1s;
+  transform: scale(1);
+}
+
+.button:hover .button-bg-layer-3 {
+  transition-delay: 0.2s;
+  transform: scale(1);
+}
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Form Perhitungan Bunga</h1>
+        
+        <div class="navbar">
+            <button id="btnTunggal" class="active" onclick="showForm('tunggal')">Bunga Tunggal</button>
+            <button id="btnMajemuk" onclick="showForm('majemuk')">Bunga Majemuk</button>
+        </div>
+
+        <!-- Form Bunga Tunggal -->
+        <form id="formTunggal">
+            <label for="pokokTunggal">Pokok Pinjaman (Rp):</label>
+            <input type="number" id="pokokTunggal" name="pokokTunggal" required>
+
+            <label for="bungaTunggal">Persentase Bunga (%):</label>
+            <input type="number" step="0.01" id="bungaTunggal" name="bungaTunggal" required>
+
+            <label for="waktuTunggal">Waktu Pinjaman:</label>
+            <input type="number" id="waktuTunggal" name="waktuTunggal" required>
+
+            <label for="jenisWaktuTunggal">Jenis Waktu:</label>
+            <select id="jenisWaktuTunggal" name="jenisWaktuTunggal" required>
+                <option value="bulan">Bulan</option>
+                <option value="triwulan">Triwulan</option>
+                <option value="caturwulan">Caturwulan</option>
+                <option value="semester">Semester</option>
+                <option value="tahun">Tahun</option>
+            </select>
+
+            <button class="button button-item" type="button" onclick="hitungBungaTunggal()">
+                <span class="button-bg">
+                    <span class="button-bg-layers">
+                        <span class="button-bg-layer button-bg-layer-1 -purple"></span>
+                        <span class="button-bg-layer button-bg-layer-2 -turquoise"></span>
+                        <span class="button-bg-layer button-bg-layer-3 -yellow"></span>
+                    </span>
+                </span>
+                <span class="button-inner">
+                    <span class="button-inner-static">Hitung Bunga Tunggal</span>
+                    <span class="button-inner-hover">Hitung Bunga Tunggal</span>
+                </span>
+            </button>
+        </form>
+
+        <!-- Form Bunga Majemuk -->
+        <form id="formMajemuk" style="display:none;">
+            <label for="pokokMajemuk">Pokok Pinjaman (Rp):</label>
+            <input type="number" id="pokokMajemuk" name="pokokMajemuk" required>
+
+            <label for="bungaMajemuk">Persentase Bunga (%):</label>
+            <input type="number" step="0.01" id="bungaMajemuk" name="bungaMajemuk" required>
+
+            <label for="waktuMajemuk">Waktu Pinjaman:</label>
+            <input type="number" id="waktuMajemuk" name="waktuMajemuk" required>
+
+            <label for="jenisWaktuMajemuk">Jenis Waktu:</label>
+            <select id="jenisWaktuMajemuk" name="jenisWaktuMajemuk" required>
+                <option value="bulan">Bulan</option>
+                <option value="triwulan">Triwulan</option>
+                <option value="caturwulan">Caturwulan</option>
+                <option value="semester">Semester</option>
+                <option value="tahun">Tahun</option>
+            </select>
+
+            <button class="button button-item" type="button" onclick="hitungBungaMajemuk()">
+                <span class="button-bg">
+                    <span class="button-bg-layers">
+                        <span class="button-bg-layer button-bg-layer-1 -purple"></span>
+                        <span class="button-bg-layer button-bg-layer-2 -turquoise"></span>
+                        <span class="button-bg-layer button-bg-layer-3 -yellow"></span>
+                    </span>
+                </span>
+                <span class="button-inner">
+                    <span class="button-inner-static">Hitung Bunga Majemuk</span>
+                    <span class="button-inner-hover">Hitung Bunga Majemuk</span>
+                </span>
+            </button>
+        </form>
+
+        <div class="result" id="result" style="display:none;">
+            <h2>Hasil Perhitungan:</h2>
+            <p id="hasilBunga"></p>
+        </div>
+    </div>
+
+    <script>
+        function showForm(type) {
+            document.getElementById("formTunggal").style.display = type === 'tunggal' ? 'block' : 'none';
+            document.getElementById("formMajemuk").style.display = type === 'majemuk' ? 'block' : 'none';
+            document.getElementById("btnTunggal").classList.toggle("active", type === 'tunggal');
+            document.getElementById("btnMajemuk").classList.toggle("active", type === 'majemuk');
+        }
+
+        function hitungBungaTunggal() {
+            const pokok = parseFloat(document.getElementById('pokokTunggal').value);
+            const bunga = parseFloat(document.getElementById('bungaTunggal').value) / 100;
+            const waktu = parseFloat(document.getElementById('waktuTunggal').value);
+            const jenisWaktu = document.getElementById('jenisWaktuTunggal').value;
+
+            let waktuDalamTahun;
+            switch (jenisWaktu) {
+                case 'bulan': waktuDalamTahun = waktu / 12; break;
+                case 'triwulan': waktuDalamTahun = waktu / 4; break;
+                case 'caturwulan': waktuDalamTahun = waktu / 3; break;
+                case 'semester': waktuDalamTahun = waktu / 2; break;
+                case 'tahun': waktuDalamTahun = waktu; break;
+            }
+
+            const totalBunga = pokok * bunga * waktuDalamTahun;
+            const totalPembayaran = pokok + totalBunga;
+
+            document.getElementById('hasilBunga').textContent = `Total Bunga: Rp ${totalBunga.toFixed(2)}, Total Pembayaran: Rp ${totalPembayaran.toFixed(2)}`;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function hitungBungaMajemuk() {
+            const pokok = parseFloat(document.getElementById('pokokMajemuk').value);
+            const bunga = parseFloat(document.getElementById('bungaMajemuk').value) / 100;
+            const waktu = parseFloat(document.getElementById('waktuMajemuk').value);
+            const jenisWaktu = document.getElementById('jenisWaktuMajemuk').value;
+
+            let waktuDalamTahun;
+            switch (jenisWaktu) {
+                case 'bulan': waktuDalamTahun = waktu / 12; break;
+                case 'triwulan': waktuDalamTahun = waktu / 4; break;
+                case 'caturwulan': waktuDalamTahun = waktu / 3; break;
+                case 'semester': waktuDalamTahun = waktu / 2; break;
+                case 'tahun': waktuDalamTahun = waktu; break;
+            }
+
+            const totalPembayaran = pokok * Math.pow(1 + bunga, waktuDalamTahun);
+            const totalBunga = totalPembayaran - pokok;
+
+            document.getElementById('hasilBunga').textContent = `Total Bunga: Rp ${totalBunga.toFixed(2)}, Total Pembayaran: Rp ${totalPembayaran.toFixed(2)}`;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
